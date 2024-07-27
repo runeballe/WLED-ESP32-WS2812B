@@ -24,14 +24,14 @@ jobs:
       run: |
         rm -rf /tmp/WLEDtemp/* || true
         mkdir -p /tmp/WLEDtemp
-        wget https://api.github.com/repos/Aircoookie/WLED/zipball/v0.15.0-b4 -O /tmp/WLEDtemp/mm.zip
+        wget https://github.com/Aircoookie/WLED/archive/refs/heads/main.zip -O /tmp/WLEDtemp/mm.zip
         unzip /tmp/WLEDtemp/mm.zip -d /tmp/WLEDtemp
         find /tmp/WLEDtemp -maxdepth 1 -mindepth 1 -name "*" -type d >> /tmp/WLEDtemp/wledfoldername
         cd `cat /tmp/WLEDtemp/wledfoldername`
         npm install
         echo '[env:custom_build]' >>platformio.ini
         echo 'extends = env:esp32dev' >>platformio.ini
-        echo 'build_flags = ${env:esp32dev.build_flags} -D WLED_AP_SSID_UNIQUE -D WLED_DEBUG -D WLED_DEBUG_HOST='\''"192.168.1.68"'\'' -D WLED_DEBUG_NTP -D WLED_ENABLE_LOXONE -D WLED_ENABLE_WEBSOCKETS -D WLED_ENABLE_ADALIGHT -D WLED_ENABLE_PIXART -D LEDPIN=16 -D USERMOD_AUTO_SAVE -D USERMOD_PWM_FAN -D USERMOD_DALLASTEMPERATURE -D USERMOD_PWM_OUTPUTS' >>platformio.ini
+        echo 'build_flags = ${env:esp32dev.build_flags} ${common.debug_flags} -D LOLIN_WIFI_FIX -D WLED_AP_SSID_UNIQUE -D WLED_DEBUG -D WLED_DEBUG_HOST='\''"192.168.1.49"'\'' -D WLED_DEBUG_NTP -D WLED_DEBUG_IMPROV -D WLED_ENABLE_SIMPLE_UI -D WLED_ENABLE_MQTT -D WLED_ENABLE_LOXONE -D WLED_ENABLE_WEBSOCKETS -D WLED_ENABLE_ADALIGHT -D WLED_ENABLE_PIXART -D LEDPIN=16 -D RLYMDE=1 -D IRPIN=16 -D WLED_MAX_BUTTONS=4 -D WLED_MAX_USERMODS=6 -D WLED_MAX_BUSSES=3 -D DEFAULT_LED_COUNT=300 -D ABL_MILLIAMPS_DEFAULT=850 -D DEFAULT_LED_TYPE=TYPE_WS2812_RGB  -D DEFAULT_LED_COLOR_ORDER=COL_ORDER_GRB -D WLED_MAX_LEDMAPS=156 -D MAX_LEDS=0 -D MAX_LEDS_PER_BUS=2048 -D MAX_LED_MEMORY=32000 -D WLED_PWM_FREQ=19531 -D CLIENT_SSID='\''"ballnett"'\'' -D CLIENT_PASS='\''"Hjellbakkvegen11"'\'' -D WLED_AP_SSID='\''"WBALLED-AP"'\'' -D WLED_AP_PASS='\''"wled1234"'\'' -D WLED_WATCHDOG_TIMEOUT=0 -D USERMOD_AUTO_SAVE -D USERMOD_PWM_FAN -D USERMOD_DALLASTEMPERATURE -D USERMOD_PWM_OUTPUTS' >>platformio.ini
         echo 'lib_deps = ' >>platformio.ini
         echo '  ${env:esp32dev.lib_deps}' >>platformio.ini
         echo '  OneWire@~2.3.7' >>platformio.ini
